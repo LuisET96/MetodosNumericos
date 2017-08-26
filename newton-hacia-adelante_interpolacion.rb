@@ -48,6 +48,7 @@ class NewtonHaciaAdelante
 			val = gets.to_f
 			@y << val
 		end
+		obtener_deltas()
 	end
 
 	def valida_valor_h(cd)
@@ -86,9 +87,11 @@ class NewtonHaciaAdelante
 
 		redondear_valores()
 
-		print @deltas
-		puts
-		puts "****************************************"
+		# print @deltas
+		# puts
+		# puts "****************************************"
+
+		parametro_desviacion()
 	end
 
 	def obtener_mas_deltas
@@ -113,7 +116,44 @@ class NewtonHaciaAdelante
 	  	end
 	  end
 	end
+
+	def parametro_desviacion
+	  s = ((@x0 - @x[0])/@h).abs
+
+		obtener_desviaciones(s)
+		# print @s
+		# puts
+		# puts "****************************************"
+		obtener_solucion()
+	end
+
+	def obtener_desviaciones(s)
+	  @s = []
+		for i in (0...@deltas.length - 1) do
+			desviacion = s - i
+			@s << desviacion
+		end
+	end
+
+	def obtener_solucion
+	  @deltas = primer_nivel()
+
+		@deltas.each do |delta|
+			
+		end
+	end
+
+	def primer_nivel
+		array_primer_nivel = []
+		@deltas.each do |s|
+			array_primer_nivel << s[0]
+		end
+
+		return array_primer_nivel
+		# print @deltas
+		# puts
+		# puts "****************************************"
+	end
 end
 
 nhd = NewtonHaciaAdelante.new
-nhd.obtener_deltas
