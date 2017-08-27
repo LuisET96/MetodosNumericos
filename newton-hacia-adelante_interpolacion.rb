@@ -1,5 +1,22 @@
+# Creando metodo de la clase Array para ordenar los valores
+# de array por metodo quick sort
+class Array
+	def quick_sort
+		return self if length <= 1
+		pivote = self[length / 2]
+		find_all { |i| i < pivote }.quick_sort +
+		find_all { |i| i == pivote } +
+		find_all { |i| i > pivote }.quick_sort
+	end
+end
+
 class NewtonHaciaAdelante
 	def initialize
+		puts "José Luis Eguía Téllez\t1791916"
+		puts "Metodos Numericos"
+		puts "Hora: M1\tSalón: 2105"
+		puts "****************************************\n\n"
+
 		@x = Array.new
 		@y = Array.new
 
@@ -8,6 +25,7 @@ class NewtonHaciaAdelante
 		obtener_datos_x()
 	end
 
+	#Obteniendo valores de X
 	def obtener_datos_x
 		cantidad_datos = 0
 		loop do
@@ -15,7 +33,7 @@ class NewtonHaciaAdelante
 			cantidad_datos = gets.to_i
 
 			if cantidad_datos <= 0
-				puts "\nDebes agregar una cantidad mayo a 0"
+				puts "\nDebes agregar una cantidad mayo a 0."
 				de_nuevo = true
 			else
 				de_nuevo = false
@@ -27,19 +45,22 @@ class NewtonHaciaAdelante
 		puts
 		puts "Valores de X..."
 		cantidad_datos.times do
-			print "Ingresa vlor para Xi: "
+			print "Ingresa valor para Xi: "
 			val = gets.to_f
 			@x << val
 		end
 
 		resultado = valida_valor_h(cantidad_datos)
 		if resultado
+			puts
+			puts "Los valores tienen la misma separación.\nEl valor para h es:\nh = #{@h}"
 			obtener_datos_y(cantidad_datos)
 		else
 			puts "Los valores de X deben tener la misma separación.\nEl problema no se puede hacer."
 		end
 	end
 
+	#Obteniendo valores de Y
 	def obtener_datos_y(cd)
 		puts
 		puts "Valores de Y..."
@@ -48,9 +69,12 @@ class NewtonHaciaAdelante
 			val = gets.to_f
 			@y << val
 		end
+		@y = @y.quick_sort
 		obtener_deltas()
 	end
 
+	# Revisa si la separacion de los valores en X
+	# es la misma y obtiene valor de h
 	def valida_valor_h(cd)
 		resultado = false
 		iteraciones = @x.length
@@ -70,6 +94,7 @@ class NewtonHaciaAdelante
 		return resultado
 	end
 
+	# Obtiene valores de los delta
 	def obtener_deltas
 		@deltas = Array.new
 		@deltas = [[@y[0]]]
@@ -84,16 +109,11 @@ class NewtonHaciaAdelante
 			delta = obtener_mas_deltas
 			@deltas << delta
 		end
-
 		redondear_valores()
-
-		# print @deltas
-		# puts
-		# puts "****************************************"
-
 		parametro_desviacion()
 	end
 
+	# Obtiene valores de los deltas
 	def obtener_mas_deltas
 	  ultimo_delta = @deltas.length - 1
 		delta = []
@@ -109,6 +129,7 @@ class NewtonHaciaAdelante
 		return delta
 	end
 
+	# Redondea los valores de delta
 	def redondear_valores
 	  for i in (0...@deltas.length) do
 	  	for j in (0...@deltas[i].length) do
@@ -117,32 +138,39 @@ class NewtonHaciaAdelante
 	  end
 	end
 
+	# Obtiene el parametro de desviacion
 	def parametro_desviacion
 	  s = ((@x0 - @x[0])/@h).abs
 
 		obtener_desviaciones(s)
-		# print @s
-		# puts
-		# puts "****************************************"
 		obtener_solucion()
 	end
 
+	# Obtiene y calcula los valores de desviacion
 	def obtener_desviaciones(s)
 	  @s = []
+		@s << 1
 		for i in (0...@deltas.length - 1) do
 			desviacion = s - i
 			@s << desviacion
 		end
 	end
 
+	# Calcula la sumatoria del resultado
 	def obtener_solucion
 	  @deltas = primer_nivel()
+		gx = 0
 
-		@deltas.each do |delta|
-			
+		@deltas.each_with_index do |delta,index|
+			gx += (delta * multiplica_factor(index)).round(4)
 		end
+		puts
+		puts "Obteniendo resultado por metodo Newton Hacia Adelante:"
+		puts "g(x) = #{gx}"
+		puts
 	end
 
+	# Obtiene primer nivel de deltas
 	def primer_nivel
 		array_primer_nivel = []
 		@deltas.each do |s|
@@ -150,9 +178,30 @@ class NewtonHaciaAdelante
 		end
 
 		return array_primer_nivel
-		# print @deltas
-		# puts
-		# puts "****************************************"
+	end
+
+	# Calcula factor usado en la sumatoria
+	def multiplica_factor(i)
+		if i < 2
+			factor = @s[i]
+		else
+			factor2 = 1
+			for j in (0..i) do
+				factor2 *= @s[j]
+			end
+			factor = factor2 / factorial(i)
+		end
+
+	  return factor
+	end
+
+	# Calcula factorial que divide la sumatoria
+	def factorial(n)
+	  if n == 0
+			return 1
+		else
+			return n * factorial(n - 1)
+		end
 	end
 end
 
