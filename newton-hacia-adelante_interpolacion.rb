@@ -56,7 +56,7 @@ class NewtonHaciaAdelante
 			puts "Los valores tienen la misma separación.\nEl valor para h es:\nh = #{@h}"
 			obtener_datos_y(cantidad_datos)
 		else
-			puts "Los valores de X deben tener la misma separación.\nEl problema no se puede hacer."
+			puts "Los valores de X deben tener la misma separación.\nEl problema no se puede hacer.\nh = #{@h}"
 		end
 	end
 
@@ -78,12 +78,12 @@ class NewtonHaciaAdelante
 	def valida_valor_h(cd)
 		resultado = false
 		iteraciones = @x.length
-		@h = (@x[1] - @x[0]).abs
+		@h = ((@x[1] - @x[0]).abs).round(4)
 
 		if @h != 0
 			for i in (0...iteraciones - 1) do
 				#puts @x[i + 1] - @x[i]
-				if @x[i + 1] - @x[i] == @h
+				if (@x[i + 1] - @x[i]).round(4) == @h
 					resultado = true
 				else
 					return false
