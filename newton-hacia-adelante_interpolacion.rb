@@ -32,8 +32,8 @@ class NewtonHaciaAdelante
 			print "Cantidad de datos a capturar: "
 			cantidad_datos = gets.to_i
 
-			if cantidad_datos <= 0
-				puts "\nDebes agregar una cantidad mayo a 0."
+			if cantidad_datos <= 1
+				puts "\nDebes agregar 2 o más datos para continuar."
 				de_nuevo = true
 			else
 				de_nuevo = false
