@@ -10,11 +10,16 @@ class Biseccion
   end
 
   def obtener_ecuacion
+    grado = ""
     print "Ingresa tu incogniota: "
     incognita = gets().chomp()
 
-    print "Ingresa el grado de tu polinomio: "
-    grado = gets().to_i()
+    loop do
+      print "Ingresa el grado de tu polinomio: "
+      grado = gets().to_i()
+      puts "\n\nDebes ingresar un grado mayor a 0." if grado <= 0
+      break if grado > 0
+    end
 
     funcion = "f(#{incognita}) = "
     for i in (0...grado) do
