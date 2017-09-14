@@ -5,7 +5,8 @@ class Biseccion
 		puts "Hora: M1\tSalón: 2105"
 		puts "****************************************\n\n"
 
-    obtener_ecuacion
+    @fx = []
+    obtener_ecuacion()
   end
 
   def obtener_ecuacion
@@ -20,12 +21,15 @@ class Biseccion
       print "Ingresa coeficiente: "
       coeficiente = gets().to_i()
 
-      funcion += coeficiente > 0 ? "+#{coeficiente}" : "#{coeficiente}"
+      funcion += coeficiente > 0 ? " +#{coeficiente}" : " #{coeficiente}"
       funcion += "#{incognita}^#{grado - i}"
+
+      @fx.push(coeficiente)
     end
 
     puts "\nTu función es:"
     puts "#{funcion}\n"
+    # print @fx
   end
 end
 
