@@ -5,7 +5,7 @@ class Biseccion
 		puts "Hora: M1\tSalón: 2105"
 		puts "****************************************\n\n"
 
-    @fx = []
+    @y = []
     obtener_ecuacion()
   end
 
@@ -16,7 +16,7 @@ class Biseccion
     print "Ingresa el grado de tu polinomio: "
     grado = gets().to_i()
 
-    funcion = "y = "
+    funcion = "f(#{incognita}) = "
     for i in (0...grado) do
       print "Ingresa coeficiente: "
       coeficiente = gets().to_i()
@@ -24,7 +24,7 @@ class Biseccion
       funcion += coeficiente > 0 ? " +#{coeficiente}" : " #{coeficiente}"
       funcion += "#{incognita}^#{grado - i}"
 
-      @fx.push(coeficiente)
+      @y.push(coeficiente)
     end
 
     puts "\nTu función es:"
