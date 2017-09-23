@@ -69,7 +69,7 @@ class NewtonHaciaAdelante
 			val = gets.to_f
 			@y << val
 		end
-		@y = @y.quick_sort
+		# @y = @y.quick_sort
 		obtener_deltas()
 	end
 
