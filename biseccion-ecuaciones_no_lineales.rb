@@ -2,7 +2,6 @@ require "dentaku"
 
 class Raphson
   DK = Dentaku::Calculator.new
-  SIGNO = ["+1", "+1", "-1"]
 
   def initialize
     puts "José Luis Eguía Téllez\t1791916"
@@ -11,8 +10,10 @@ class Raphson
 		puts "****************************************\n\n"
 
     obtener_ecuacion
-    # evaluar_funcion(3)
-    # metodo_biseccion
+    resultado = metodo_biseccion
+
+    puts "Numero de iteraciones: #{resultado.last}"
+    puts "Diferencias: #{resultado.first.round(5)}, #{resultado[1].round(5)}"
   end
 
   def obtener_ecuacion
@@ -27,12 +28,13 @@ class Raphson
       @ecuacion << gets.to_i
     end
 
-    puts "\n\nSu ecuacion es:"
+    puts "\nSu ecuacion es:"
     c = ""
     @ecuacion.each_with_index do |ec,i|
       c += ec >= 0 ? "+#{ec}x^#{@grado - i}" : "#{ec}x^#{@grado - i}"
     end
     puts "f(x) = #{c[1, c.length]}"
+    puts
   end
 
   def metodo_biseccion
@@ -42,22 +44,34 @@ class Raphson
 
     # Valor inicial de A
     # factor = @ecuacion.last.to_i.positive? ? 1 : -1
-    factor = SIGNO[@ecuacion.last <=> 0]
+    factor = get_signo(@ecuacion.last.to_i) * -1
     a = ((@ecuacion.last.to_i.abs / @ecuacion.first.to_i.abs) ** (1.0/@grado)).to_i * factor;
-    obtiene_valor_b(a)
+    b = obtiene_valor_b(a)
+    resultado = false
 
     loop do
+      i += 1
       c_ant = c_act
+      c_act = (a + b)/2.0
 
+      if evaluar_funcion(c_act) >= 0
+        a = c_act
+      else
+        b = c_act
+      end
+
+      if (c_act - c_ant).abs <= 0.001
+        resultado = [c_ant, c_act, i]
+      end
+
+      break if (c_act - c_ant).abs <= 0.001
     end
+    return resultado
   end
 
   def obtiene_valor_b(a)
-    factor = [1,-1]
-    signo_inicial = SIGNO[a <=> 0].to_i
-    funcion_evaluada = evaluar_funcion(a)
-    # signo_obtenido = funcion_evaluada.positive? ? -1 : 1
-    signo_obtenido = SIGNO[a <=> 0].to_i
+    signo1 = get_signo(evaluar_funcion(a))
+    return get_signo(evaluar_funcion(a - 1)) != signo1 ? a - 1 : a + 1
   end
 
   def evaluar_funcion(x)
@@ -72,7 +86,10 @@ class Raphson
     end
 
     return DK.evaluate(ecuacion, x: x)
+  end
 
+  def get_signo(x)
+    return ["+1", "+1", "-1"][x <=> 0].to_i
   end
 
 end
