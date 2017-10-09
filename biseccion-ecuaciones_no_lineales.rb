@@ -16,6 +16,7 @@ class Raphson
     puts "Diferencias: #{resultado.first.round(5)}, #{resultado[1].round(5)}"
   end
 
+  # Obtiene los coegicientes de la ecuacion con la que se va a trabajar.
   def obtener_ecuacion
     @ecuacion = Array.new()
 
@@ -37,13 +38,13 @@ class Raphson
     puts
   end
 
+  # Ejecuta el metodo de biseccion para tener las raices de la ecuacion.
   def metodo_biseccion
     i = 0
     c_ant = 0
     c_act = 0
 
-    # Valor inicial de A
-    # factor = @ecuacion.last.to_i.positive? ? 1 : -1
+    # Valor inicial de A.
     factor = get_signo(@ecuacion.last.to_i) * -1
     a = ((@ecuacion.last.to_i.abs / @ecuacion.first.to_i.abs) ** (1.0/@grado)).to_i * factor;
     b = obtiene_valor_b(a)
@@ -69,11 +70,13 @@ class Raphson
     return resultado
   end
 
+  # Obtiene valor de B a partir del valor de A.
   def obtiene_valor_b(a)
     signo1 = get_signo(evaluar_funcion(a))
     return get_signo(evaluar_funcion(a - 1)) != signo1 ? a - 1 : a + 1
   end
 
+  # Evalua la funcion capturada con el parametro que se le pase.
   def evaluar_funcion(x)
     ecuacion = ""
 
@@ -88,6 +91,7 @@ class Raphson
     return DK.evaluate(ecuacion, x: x)
   end
 
+  # Obtiene el signo de un numero. Si el numero es neutral se considera postivo.
   def get_signo(x)
     return ["+1", "+1", "-1"][x <=> 0].to_i
   end
