@@ -67,7 +67,7 @@ class ReglaTrapecio
 
     valores_aux = []
     valores.each do |valores|
-      valores_aux << (evaluar_funcion(valores)).round(4).abs
+      valores_aux << (evaluar_funcion(valores)).to_f.abs
     end
     # puts valores_aux
     return valores_aux
@@ -90,7 +90,7 @@ class ReglaTrapecio
   def obtener_solucion(valores,h)
     factor_interno = calcula_factor_interno(valores)
 
-    resultado = (h/2.0 * (valores.first + valores.last + factor_interno)).round(4)
+    resultado = (h/2.0 * (valores.first + valores.last + factor_interno)).to_f.round(4)
 
     puts "I = #{resultado}"
   end
